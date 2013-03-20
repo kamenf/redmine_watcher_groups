@@ -1,0 +1,27 @@
+<h3 class="title"><%= l(:permission_add_issue_watchers) %></h3>
+
+<%= form_tag({:controller => 'watcher_groups',
+              :action => (watched ? 'create' : 'append'),
+              :object_type => watched.class.name.underscore,
+              :object_id => watched},
+             :remote => true,
+             :method => :post,
+             :id => 'new-watcher-group-form') do %>
+
+  <p><%= label_tag 'group_search', l(:label_group_search) %><%= text_field_tag 'group_search', nil %></p>
+  <%= javascript_tag "observeSearchfield('group_search', 'groups_for_watcher', '#{ escape_javascript url_for(:controller => 'watcher_groups',
+                 :action => 'autocomplete_for_group',
+                 :object_type => watched.class.name.underscore,
+                 :object_id => watched) }')" %>
+
+  <div id="groups_for_watcher">
+    <%= principals_check_box_tags 'watcher_group[group_ids][]', (
+      # watched ? watched.addable_watcher_groups : 
+      Group.active.all(:limit => 100)) %>
+  </div>
+
+  <p class="buttons">
+    <%= submit_tag l(:button_add), :name => nil, :onclick => "hideModal(this);" %>
+    <%= submit_tag l(:button_cancel), :name => nil, :onclick => "hideModal(this);", :type => 'button' %>
+  </p>
+<% end %>

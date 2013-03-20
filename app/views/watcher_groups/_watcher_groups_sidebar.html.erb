@@ -1,0 +1,11 @@
+
+<% if User.current.allowed_to?(:add_issue_watchers, @project) || 
+    (watched.watcher_groups.present? && User.current.allowed_to?(:view_issue_watchers, @project)) %> 
+
+<%= stylesheet_link_tag 'watcher_groups.css', :plugin => 'redmine_watcher_groups' %>
+
+  <div id="watcher_groups"> 
+    <%= render(:partial => 'watcher_groups/watcher_groups', :locals => {:watched => watched}) %>
+  </div>
+<% end %>
+

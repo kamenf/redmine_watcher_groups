@@ -1,0 +1,4 @@
+<% @groups.each do |group| %>
+  $("#issue_watcher_group_ids_<%= group.id %>").remove();
+<% end %>
+$('#watcher_groups_inputs').append('<%= escape_javascript(watcher_groups_checkboxes(nil, @groups, true)) %>');

@@ -1,0 +1,23 @@
+#watcher_groups ul {margin: 0;  padding: 0;}
+#watcher_groups li {list-style-type:none;margin: 0px 2px 0px 0px; padding: 0px 0px 0px 0px;}
+#watcher_groups select {width: 95%; display: block;}
+#watcher_groups a.delete {opacity: 0.4;}
+#watcher_groups a.delete:hover {opacity: 1;}
+#watcher_groups img.gravatar {margin: 0 4px 2px 0;}
+
+span#watcher_groups_inputs {overflow:auto; display:block;}
+span.search_for_watcher_groups {display:block;}
+span.search_for_watcher_groups, span.add_attachment {font-size:80%; line-height:2.5em;}
+span.search_for_watcher_groups a, span.add_attachment a {padding-left:16px; background: url(../../../images/bullet_add.png) no-repeat 0 50%; } 
+
+#groups_for_watcher {height: 200px; overflow:auto;}
+#groups_for_watcher label {display: block;} 
+
+input#group_search {width:100%}
+input#group_search {
+  background: url(../../../images/magnifier.png) no-repeat 2px 50%; padding-left:20px;
+  border:1px solid #9EB1C2; border-radius:3px; height:1.5em; width:95%;
+}
+input#group_search.ajax-loading {
+  background-image: url(../../../images/loading.gif);
+} 
