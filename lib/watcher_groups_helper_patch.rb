@@ -92,7 +92,7 @@ module WatcherGroupsWatcherHelperPatch
       def watched_by_with_groups?(user)
         watcher_groups.each do |group|
           return true if user.is_or_belongs_to?(group)
-        end
+        end if self.id?
         watched_by_without_groups?(user)
       end
 
