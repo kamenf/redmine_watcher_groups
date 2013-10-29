@@ -8,7 +8,8 @@ module WatcherGroupsWatcherHelperPatch
             # unloadable
 
             alias_method_chain :notified_watchers , :groups
-            
+            alias_method_chain :watched_by? , :groups
+
             Rails.logger.info 'WatcherGroupsWatcherHelperPatch monkey-patch'
         end
     end
@@ -87,6 +88,13 @@ module WatcherGroupsWatcherHelperPatch
             notified += notified_watchers_without_groups
             notified.uniq
         end
+
+      def watched_by_with_groups?(user)
+        watcher_groups.each do |group|
+          return true if user.is_or_belongs_to?(group)
+        end
+        watched_by_without_groups?(user)
+      end
 
     end
 
