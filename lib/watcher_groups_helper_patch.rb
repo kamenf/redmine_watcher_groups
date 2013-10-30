@@ -17,12 +17,16 @@ module WatcherGroupsWatcherHelperPatch
     IssuesController.class_eval do
       helper :watcher_groups
       include WatcherGroupsHelper
-    end     	
+    end
 
 
     Issue.class_eval do
     	include WatcherGroupsHelper
-    	
+
+      scope :watched_by, lambda { |user|
+        joins(:watchers).where("#{Watcher.table_name}.user_id IN (#{user.id}, #{Group.select {|g| user.is_or_belongs_to?(g)}.map(&:id).join(',')})")
+      }
+
     	def watcher_groups
             groups = Watcher.find(:all, :conditions => "watchable_type='#{self.class}' and watchable_id = #{self.id}")
             Group.find_all_by_id(groups.map(&:user_id))
