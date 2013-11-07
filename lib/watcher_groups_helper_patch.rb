@@ -24,7 +24,8 @@ module WatcherGroupsWatcherHelperPatch
     	include WatcherGroupsHelper
 
       scope :watched_by, lambda { |user|
-        joins(:watchers).where("#{Watcher.table_name}.user_id IN (#{user.id}, #{user.groups.map(&:id).join(',')})")
+        g = user.groups
+        joins(:watchers).where("#{Watcher.table_name}.user_id IN (#{user.id} #{g.empty? ? "" : ","} #{g.map(&:id).join(',')})")
       }
 
     	def watcher_groups
