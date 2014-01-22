@@ -17,9 +17,9 @@ end
 
 Redmine::Plugin.register :redmine_watcher_groups do
   name 'Redmine Watcher Groups plugin'
-  author 'Kamen Ferdinandov'
-  description 'This is a plugin for Redmine to add wathcer groups functionality'
-  version '0.0.1'
-  url 'http://'
-  author_url 'kamenf'
+  author 'Kamen Ferdinandov, Massimo Rossello'
+  description 'This is a plugin for Redmine to add watcher groups functionality'
+  version '0.0.2'
+  url 'http://github.com/maxrossello/redmine_watcher_groups'
+  author_url 'http://github.com/maxrossello'
 end
