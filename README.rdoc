@@ -1,8 +1,8 @@
 = Redmine Watcher Groups
 
-Plugin for Redmine that adds functionality to have Watcher Groups in additioan to Watchers.
+Plugin for Redmine that adds functionality to have Watcher Groups in addition to Watchers.
 
 Adds new list in the showed Issue sidebar which lists added Watcher Groups and allows to add/remove groups to that list.
 
-All notifications to invovled in a issue users (watchers + involved) are sent also to the current members of all added groups.
+All notifications to involved in a issue users (watchers + involved) are sent also to the current members of all added groups.
 
