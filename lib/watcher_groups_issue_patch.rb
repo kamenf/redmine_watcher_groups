@@ -1,6 +1,5 @@
-require_dependency 'watcher_groups_helper' 
 
-module WatcherGroupsWatcherHelperPatch
+module WatcherGroupsIssuePatch
 
     def self.included(base) # :nodoc:
         base.send(:include, InstanceMethods)
@@ -13,12 +12,6 @@ module WatcherGroupsWatcherHelperPatch
             Rails.logger.info 'WatcherGroupsWatcherHelperPatch monkey-patch'
         end
     end
-
-    IssuesController.class_eval do
-      helper :watcher_groups
-      include WatcherGroupsHelper
-    end
-
 
     Issue.class_eval do
     	include WatcherGroupsHelper
