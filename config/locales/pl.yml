@@ -1,4 +1,4 @@
 # English strings go here for Rails i18n
 pl:
-  label_issue_watcher_groups: "Grupy, które są obserwatorem"
+  label_issue_watcher_groups: "Grupy, które są obserwatorami"
   label_group_search: "Wyszukaj grupę:"
