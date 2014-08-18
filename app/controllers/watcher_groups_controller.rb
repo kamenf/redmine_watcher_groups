@@ -15,7 +15,7 @@ class WatcherGroupsController < ApplicationController
            :conditions => "watchable_type='#{@watched.class}' and watchable_id = #{@watched.id} and user_id = '#{group_id}'",
            :limit => 1).blank?
           # insert directly into table to avoid user type checking
-          Watcher.connection.execute("INSERT INTO #{Watcher.table_name} (user_id, watchable_id, watchable_type) VALUES (#{group_id}, #{@watched.id}, '#{@watched.class.name}')")
+          Watcher.connection.execute("INSERT INTO #{Watcher.table_name} (user_id, watchable_id, watchable_type) VALUES (#{ActiveRecord::Base.sanitize(group_id)}, #{@watched.id}, '#{@watched.class.name}')")
         end
       end
     end
