@@ -1,0 +1,5 @@
+#Russian strings go here for Rails i18n
+ru:
+  my_label: "My label"
+  label_issue_watcher_groups: "Группы наблюдателей"
+  label_group_search: "Искать группу:"
