@@ -1,4 +1,4 @@
-require_dependency 'watcher_groups_helper' 
+require_dependency 'watcher_groups_helper'
 
 module WatcherGroupsWatcherHelperPatch
 
@@ -8,7 +8,7 @@ module WatcherGroupsWatcherHelperPatch
             # unloadable
 
             alias_method_chain :notified_watchers , :groups
-            
+
             Rails.logger.info 'WatcherGroupsWatcherHelperPatch monkey-patch'
         end
     end
@@ -16,17 +16,18 @@ module WatcherGroupsWatcherHelperPatch
     IssuesController.class_eval do
       helper :watcher_groups
       include WatcherGroupsHelper
-    end     	
+    end
 
 
     Issue.class_eval do
     	include WatcherGroupsHelper
-    	
+
     	def watcher_groups
-            groups = Watcher.find(:all, :conditions => "watchable_type='#{self.class}' and watchable_id = #{self.id}")
-            Group.find_all_by_id(groups.map(&:user_id))
+        groups = Watcher.where("watchable_type='#{self.class}' and watchable_id = #{self.id}")
+        return [] if groups.empty?
+        Group.where(id: groups.map(&:user_id))
     	end
-    	      	  
+
         # Returns an array of users that are proposed as watchers
         def addable_watcher_groups
           groups = self.project.principals.select{|p| p if p.type=='Group'}
@@ -39,9 +40,7 @@ module WatcherGroupsWatcherHelperPatch
 
         # Adds group as a watcher
         def add_watcher_group(group)
-          if Watcher.find(:all, 
-             :conditions => "watchable_type='#{self.class}' and watchable_id = #{self.id} and user_id = '#{group.id}'",
-             :limit => 1).blank?
+          if Watcher.where("watchable_type='#{self.class}' and watchable_id = #{self.id} and user_id = '#{group.id}'").limit(1).blank?
             # insert directly into table to avoid user type checking
             Watcher.connection.execute("INSERT INTO `#{Watcher.table_name}` (`user_id`, `watchable_id`, `watchable_type`) VALUES (#{group.id}, #{self.id}, '#{self.class.name}')")
           end
@@ -64,26 +63,26 @@ module WatcherGroupsWatcherHelperPatch
         end
 
     end
-    
+
 
     module InstanceMethods
 
         def notified_watchers_with_groups
-        
+
             notified = []
 
-            w = Watcher.find(:all, :conditions => "watchable_type='#{self.class}' and watchable_id = #{self.id}")
-            groups = Group.find_all_by_id(w.map(&:user_id))
+            w = Watcher.where("watchable_type='#{self.class}' and watchable_id = #{self.id}")
+            groups = Group.where(id: w.map(&:user_id))
 
-            groups.each do |p|  
-                group_users = p.users.active
+            groups.each do |p|
+                group_users = p.users.active.to_a
                 group_users.reject! {|user| user.mail.blank? || user.mail_notification == 'none'}
                 if respond_to?(:visible?)
                   group_users.reject! {|user| !visible?(user)}
-                end             
+                end
                 notified += group_users
             end
-        
+
             notified += notified_watchers_without_groups
             notified.uniq
         end
@@ -91,5 +90,3 @@ module WatcherGroupsWatcherHelperPatch
     end
 
 end
-
-

@@ -1,0 +1,4 @@
+# Simplfied Chinese strings go here for Rails i18n
+zh:
+  label_issue_watcher_groups: "跟踪人员组"
+  label_group_search: "搜索组："
