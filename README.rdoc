@@ -1,5 +1,7 @@
 = Redmine Watcher Groups
 
+*Redmine supports the feature natively since version 4.2.0*
+
 Plugin for Redmine that adds functionality to have Watcher Groups in addition to Watchers.
 
 Adds new list in the showed Issue sidebar which lists added Watcher Groups and allows to add/remove groups to that list.
