@@ -1,6 +1,5 @@
-require_dependency 'watcher_groups_helper' 
 
-module WatcherGroupsWatcherHelperPatch
+module WatcherGroupsIssuePatch
 
     def self.included(base) # :nodoc:
         base.send(:include, InstanceMethods)
@@ -8,20 +7,21 @@ module WatcherGroupsWatcherHelperPatch
             # unloadable
 
             alias_method_chain :notified_watchers , :groups
-            
+            alias_method_chain :watched_by? , :groups
+
             Rails.logger.info 'WatcherGroupsWatcherHelperPatch monkey-patch'
         end
     end
 
-    IssuesController.class_eval do
-      helper :watcher_groups
-      include WatcherGroupsHelper
-    end     	
-
-
     Issue.class_eval do
     	include WatcherGroupsHelper
-    	
+
+      scope :watched_by, lambda { |user|
+        user = User.find(user) unless user.is_a?(User)
+        g = user.groups
+        joins(:watchers).where("#{Watcher.table_name}.user_id IN (#{user.id} #{g.empty? ? "" : ","} #{g.map(&:id).join(',')})")
+      }
+
     	def watcher_groups
             groups = Watcher.find(:all, :conditions => "watchable_type='#{self.class}' and watchable_id = #{self.id}")
             Group.find_all_by_id(groups.map(&:user_id))
@@ -87,6 +87,13 @@ module WatcherGroupsWatcherHelperPatch
             notified += notified_watchers_without_groups
             notified.uniq
         end
+
+      def watched_by_with_groups?(user)
+        watcher_groups.each do |group|
+          return true if user.is_or_belongs_to?(group)
+        end if self.id?
+        watched_by_without_groups?(user)
+      end
 
     end
 
